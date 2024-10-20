@@ -4,7 +4,7 @@ All the configs &amp; files I write for my personal server, simply codenamed DS9
 # To-Do
 
 ## General Stuff
-- [ ] get website name to redirect to server IP
+- [X] get website name to redirect to server IP
 - [ ] setup reverse proxy (I think I have to do this?)
 - [ ] get analytics running (maybe use Grafana?)
 - [ ] get dashboard up and running maybe (casaOS style?)
