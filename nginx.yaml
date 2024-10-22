@@ -1,26 +1,32 @@
-version: '3.8'
-
 services:
   nginx-proxy-manager:
     image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
     ports:
-      # These ports are in format <host-port>:<container-port>
-      - '80:80' # Public HTTP Port
-      - '443:443' # Public HTTPS Port
-      - '81:81' # Admin Web Port
-      # Add any other Stream port you want to expose
-      - '21:21' # FTP
-
-    # Uncomment the next line if you uncomment anything in the section
-    # environment:
-      # Uncomment this if you want to change the location of
-      # the SQLite DB file within the container
-      # DB_SQLITE_FILE: "/data/database.sqlite"
-
-      # Uncomment this if IPv6 is not enabled on your host
-      # DISABLE_IPV6: 'true'
-
+      - '80:80'
+      - '81:81'
+      - '443:443'
+    networks:
+      - proxy
+    environment:
+      DB_MYSQL_HOST: "db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "Quark"
+      DB_MYSQL_PASSWORD: "Wearegr0ss"
+      DB_MYSQL_NAME: "npm"
     volumes:
-      - ./nginx/data:/data
-      - ./nginx/letsencrypt:/etc/letsencrypt
+      - ./data:/data
+      - ./letsencrypt:/etc/letsencrypt
+  db:
+    image: 'jc21/mariadb-aria:latest'    
+    networks:
+      - proxy
+    environment:
+      MYSQL_ROOT_PASSWORD: 'Wearegr0ss'
+      MYSQL_DATABASE: 'npm'
+      MYSQL_USER: 'Quark'
+      MYSQL_PASSWORD: 'Wearegr0ss'
+    volumes:
+      - ./mysql:/var/lib/mysql
+      
+networks:
+  proxy:
