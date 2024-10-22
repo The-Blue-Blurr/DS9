@@ -39,3 +39,4 @@ services:
       
 networks:
   proxy:
+    external: true
