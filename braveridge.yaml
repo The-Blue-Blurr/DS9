@@ -1,36 +1,35 @@
-# copypasta from mcsmanager
 services:
   Braveridge-Manager-gui:
     image: githubyumao/mcsmanager-web:latest
-    ports:
-      - "23333:23333"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /home/Sisko/Braveridge/web/data:/opt/mcsmanager/web/data
-      - /home/Sisko/Braveridge/web/logs:/opt/mcsmanager/web/logs
+      - /home/Sisko/DS9/Braveridge/web/data:/opt/mcsmanager/web/data
+      - /home/Sisko/DS9/Braveridge/web/logs:/opt/mcsmanager/web/logs
+    networks:
+      - proxy
 
   Braveridge-Manager-daemon:
     image: githubyumao/mcsmanager-daemon:latest
     restart: unless-stopped
-    ports:
-      - "24444:24444"
     environment:
       - MCSM_DOCKER_WORKSPACE_PATH=/home/Sisko/Braveridge/daemon/data/InstanceData
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /home/Sisko/Braveridge/daemon/data:/opt/mcsmanager/daemon/data
-      - /home/Sisko/Braveridge/daemon/logs:/opt/mcsmanager/daemon/logs
+      - /home/Sisko/DS9/Braveridge/daemon/data:/opt/mcsmanager/daemon/data
+      - /home/Sisko/DS9/Braveridge/daemon/logs:/opt/mcsmanager/daemon/logs
       - /var/run/docker.sock:/var/run/docker.sock
-      
-# copypasta from itzg's docs
+
   mc:
     image: itzg/minecraft-server
     tty: true
     stdin_open: true
-    ports:
-      - "25565:25565"
     environment:
       EULA: "TRUE"
+    networks:
+      - proxy
     volumes:
       # attach the relative directory 'data' to the container's /data path (unsure if configured correctly, TBB)
-      - /home/Sisko/Braveridge/data:/data
+      - /home/Sisko/DS9/Braveridge/data:/data
+      
+networks:
+  proxy:
